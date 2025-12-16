@@ -1,12 +1,8 @@
 import type { NextConfig } from "next";
-module.exports = {
-  experimental: {
-    dynamicIO: false,
-  },
-};
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  experimental: {
+  },
 };
 
 export default nextConfig;

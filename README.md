@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tech Tools Hub 🚀
 
-## Getting Started
+**O seu guia rápido de comandos essenciais para o dia a dia.**
 
-First, run the development server:
+![Status do Projeto](https://img.shields.io/badge/Status-Em_Desenvolvimento-green)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🎯 Objetivo
+O **Tech Tools Hub** nasceu para resolver um problema comum: **"Qual era aquele comando mesmo?"**. 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Nossa missão é ajudar desenvolvedores que às vezes ficam perdidos em meio a tantas ferramentas (Docker, Git, Kubernetes, etc.) e não querem perder tempo lendo documentações oficiais extensas, complexas ou inteiramente em inglês apenas para lembrar de uma sintaxe básica.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Aqui a informação é **direta**, **clara** e **em português**. Sem enrolação.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Funcionalidades
 
-## Learn More
+- 📚 **Catálogo Organizado**: Ferramentas separadas por categorias (DevOps, Frontend, Database, etc.).
+- ⚡ **Busca Poderosa**: Encontre qualquer comando instantaneamente. (Dica Pro: Use a tecla `/` para focar na busca).
+- 🌙 **Dark Mode**: Porque sabemos que você prefere.
+- 📋 **Copy & Paste**: Copie os comandos com um único clique.
+- 📱 **Responsivo**: Funciona bem no desktop ou no celular.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Tecnologias Utilizadas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Este projeto foi construído com as melhores tecnologias modernas de desenvolvimento web:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **[Next.js 15+](https://nextjs.org/)** (App Router)
+- **[React](https://react.dev/)**
+- **[Tailwind CSS v4](https://tailwindcss.com/)** (Estilização)
+- **[Framer Motion](https://www.framer.com/motion/)** (Animações fluidas)
+- **[Lucide React](https://lucide.dev/)** (Ícones)
 
-## Deploy on Vercel
+## 🚀 Como Rodar Localmente
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Siga os passos abaixo para ter o projeto rodando na sua máquina:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/lazaaro01/Tech-Tools-Hub
+   cd Tech-Tools-Hub
+   ```
+
+2. **Instale as dependências:**
+   ```bash
+   npm install
+   # ou
+   yarn install
+   ```
+
+3. **Rode o servidor de desenvolvimento:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Acesse:**
+   Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
+
+## 🤝 Como Contribuir
+
+Sinta-se à vontade para abrir Issues ou Pull Requests adicionando novas ferramentas ou comandos que você usa no dia a dia!
+
+---
+Feito para facilitar a sua vida. 💜
