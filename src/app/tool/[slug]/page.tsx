@@ -2,6 +2,7 @@ import Link from "next/link";
 import { tools } from "@/data/tools";
 import { Tool } from "@/types/Tool";
 import CopyButton from "@/components/CopyButton";
+import ExplainButton from "@/components/ExplainButton";
 
 interface ToolPageProps {
   params: Promise<{ slug: string }>;
@@ -57,13 +58,15 @@ export default async function ToolPage({ params }: ToolPageProps) {
                   {c.cmd}
                 </div>
               </div>
-              <div className="opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                <ExplainButton command={c.cmd} toolName={tool.name} />
                 <CopyButton text={c.cmd} />
               </div>
             </div>
           ))}
         </div>
       </div>
+
 
       <a
         href={tool.docs}
