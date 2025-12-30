@@ -52,34 +52,49 @@ export default function ExplainButton({ command, toolName }: ExplainButtonProps)
 
             <AnimatePresence>
                 {visible && explanation && (
-                    <>
-                        <div
-                            className="fixed inset-0 z-40 bg-black/5 backdrop-blur-[1px]"
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
                             onClick={() => setVisible(false)}
                         />
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                            className="absolute right-0 bottom-full mb-2 w-72 z-50 p-4 rounded-xl bg-white dark:bg-gray-800 shadow-xl border border-indigo-100 dark:border-indigo-900/50 text-sm leading-relaxed"
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            className="relative w-full max-w-lg bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-indigo-100 dark:border-indigo-900/50 overflow-hidden"
                         >
-                            <div className="flex items-center justify-between mb-2 pb-2 border-b border-gray-100 dark:border-gray-700">
-                                <div className="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 font-semibold text-xs uppercase tracking-wider">
-                                    <Sparkles size={14} />
-                                    IA Explain
+                            <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50">
+                                <div className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-sm uppercase tracking-wider">
+                                    <Sparkles size={18} />
+                                    Explicar com IA
                                 </div>
                                 <button
                                     onClick={() => setVisible(false)}
-                                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                                    className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
                                 >
-                                    <X size={14} />
+                                    <X size={20} />
                                 </button>
                             </div>
-                            <p className="text-gray-700 dark:text-gray-200">
-                                {explanation}
-                            </p>
+                            <div className="p-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                                <div className="prose dark:prose-invert max-w-none">
+                                    <p className="text-gray-700 dark:text-gray-200 text-base leading-relaxed whitespace-pre-wrap">
+                                        {explanation}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="p-4 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-100 dark:border-gray-800 flex justify-end">
+                                <button
+                                    onClick={() => setVisible(false)}
+                                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors"
+                                >
+                                    Entendi
+                                </button>
+                            </div>
                         </motion.div>
-                    </>
+                    </div>
                 )}
             </AnimatePresence>
         </div>

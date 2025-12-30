@@ -32,16 +32,24 @@ export default function SearchBar() {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative group">
+      <div className="absolute left-3 top-2.5 text-gray-400 group-focus-within:text-indigo-500 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
       <input
         ref={inputRef}
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Buscar ferramentas (ou pressione '/')..."
-        className="w-full rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2 bg-white dark:bg-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
+        placeholder="Buscar ferramentas..."
+        className="w-full rounded-full border border-gray-200 dark:border-gray-700 pl-10 pr-12 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all shadow-sm hover:shadow-md"
       />
       {q ? (
-        <button onClick={() => setQ("")} className="absolute right-2 top-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+        <button
+          onClick={() => setQ("")}
+          className="absolute right-3 top-2 text-sm text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors"
+        >
           limpar
         </button>
       ) : (
