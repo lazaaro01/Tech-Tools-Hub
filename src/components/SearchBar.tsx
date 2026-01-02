@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import debounce from "lodash.debounce";
 
 export default function SearchBar() {
@@ -11,14 +11,17 @@ export default function SearchBar() {
     window.dispatchEvent(new CustomEvent("techtools:search", { detail: value }));
   };
 
-  const debouncedEmit = debounce(emit, 200);
+  const debouncedEmit = useMemo(() => debounce(emit, 200), []);
 
   useEffect(() => {
     debouncedEmit(q);
+  }, [q, debouncedEmit]);
+
+  useEffect(() => {
     return () => {
       debouncedEmit.cancel();
     };
-  }, [q]);
+  }, [debouncedEmit]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -42,6 +45,12 @@ export default function SearchBar() {
         ref={inputRef}
         value={q}
         onChange={(e) => setQ(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            debouncedEmit.cancel();
+            emit(q);
+          }
+        }}
         placeholder="Buscar ferramentas..."
         className="w-full rounded-full border border-gray-200 dark:border-gray-700 pl-10 pr-12 py-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all shadow-sm hover:shadow-md"
       />
