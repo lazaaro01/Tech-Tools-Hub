@@ -52,7 +52,8 @@ Siga os passos abaixo para ter o projeto rodando na sua máquina:
    ```
 
 4. **Acesse:**
-   Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
+
+   [Link do Projeto](https://tech-tools-hub.vercel.app/)
 
 ## 🤝 Como Contribuir
 
