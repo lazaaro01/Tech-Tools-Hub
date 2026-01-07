@@ -18,7 +18,6 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* espaço flexível: busca vai crescer */}
         <div className="flex-1 max-w-md">
           <SearchBar />
         </div>

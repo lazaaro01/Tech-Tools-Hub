@@ -379,5 +379,42 @@ export const tools: Tool[] = [
       { title: "Responsive Breakpoints", cmd: "d-none d-md-block - Esconde em mobile, mostra em md+" }
     ],
     docs: "https://getbootstrap.com/"
+  },
+  {
+    slug: "git-commit-standards",
+    name: "Padrões de Commit",
+    description: "Padrões convencionais para mensagens de commit com tags para melhor organização do histórico.",
+    category: "Version Control",
+    commands: [
+      { title: "New Feature", cmd: "feat: Para novas funcionalidades ou melhorias significativas." },
+      { title: "Fix", cmd: "fix: Para correções de bugs ou problemas críticos." },
+      { title: "Refactor", cmd: " refactor: Para alterações no código que melhoram a estrutura ou legibilidade, mas não alteram o comportamento." },
+      { title: "Improvement", cmd: "improvement: Para melhorias gerais que não necessariamente são refatorações." },
+      { title: "Docs", cmd: "docs: Para alterações na documentação do projeto." },
+      { title: "Remove", cmd: "remove: Quando você remove código, arquivos ou funcionalidades obsoletas." },
+      { title: "Style", cmd: "style: Para alterações de estilo (ex: formatação de código), sem mudar o comportamento do software." },
+      { title: "Test", cmd: "test: Para adição ou modificação de testes." },
+      { title: "Quality", cmd: "chore: Qualidade do código / refatoração" }
+    ],
+    docs: "https://github.com/iuricode/padroes-de-commits"
+  },
+  {
+    slug: "laravel",
+    name: "Laravel (PHP)",
+    description: "Framework PHP para desenvolvimento web rápido e elegante, com ferramentas para autenticação, roteamento e bancos de dados.",
+    category: "Backend",
+    commands: [
+      { title: "Instalar Laravel", cmd: "composer create-project laravel/laravel my-app" },
+      { title: "Rodar servidor", cmd: "php artisan serve" },
+      { title: "Criar migration", cmd: "php artisan make:migration create_users_table" },
+      { title: "Executar migrations", cmd: "php artisan migrate" },
+      { title: "Criar model", cmd: "php artisan make:model User" },
+      { title: "Criar controller", cmd: "php artisan make:controller UserController" },
+      { title: "Gerar chave da app", cmd: "php artisan key:generate" },
+      { title: "Limpar cache", cmd: "php artisan cache:clear" },
+      { title: "Criar seeder", cmd: "php artisan make:seeder UsersTableSeeder" },
+      { title: "Executar seeders", cmd: "php artisan db:seed" }
+    ],
+    docs: "https://laravel.com/docs"
   }
 ];

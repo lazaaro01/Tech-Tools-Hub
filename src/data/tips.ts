@@ -54,5 +54,63 @@ export const tips: Tip[] = [
         title: "Volte para o diretório anterior",
         content: "Mude rapidamente para o diretório onde você estava antes do último 'cd'.",
         command: "cd -"
+    },
+    {
+        id: 8,
+        tool: "Node.js",
+        title: "Verifique versões de pacotes",
+        content: "Liste todas as dependências instaladas com suas versões para manter o controle do projeto.",
+        command: "npm list --depth=0"
+    },
+    {
+        id: 9,
+        tool: "React",
+        title: "Hooks personalizados",
+        content: "Crie hooks personalizados para reutilizar lógica de estado entre componentes, tornando seu código mais limpo e modular.",
+    },
+    {
+        id: 10,
+        tool: "TypeScript",
+        title: "Tipos utilitários",
+        content: "Use tipos utilitários como 'Partial' ou 'Pick' para manipular interfaces de forma eficiente sem redefini-las.",
+    },
+    {
+        id: 11,
+        tool: "Bash",
+        title: "Histórico de comandos",
+        content: "Pressione 'Ctrl + R' para buscar no histórico de comandos do terminal de forma interativa.",
+    },
+    {
+        id: 12,
+        tool: "Git",
+        title: "Stash temporário",
+        content: "Salve mudanças não commitadas temporariamente com 'stash' para alternar entre branches sem perder trabalho.",
+        command: "git stash"
+    },
+    {
+        id: 13,
+        tool: "Docker",
+        title: "Logs em tempo real",
+        content: "Monitore os logs de um container em execução para depurar aplicações em tempo real.",
+        command: "docker logs -f container_name"
+    },
+    {
+        id: 14,
+        tool: "VS Code",
+        title: "Snippets personalizados",
+        content: "Crie snippets personalizados no VS Code para acelerar a escrita de código repetitivo.",
+    },
+    {
+        id: 15,
+        tool: "NPM",
+        title: "Scripts customizados",
+        content: "Defina scripts personalizados no package.json para automatizar tarefas comuns do projeto.",
+    },
+    {
+        id: 16,
+        tool: "Linux",
+        title: "Processos em execução",
+        content: "Liste todos os processos em execução com detalhes para monitorar o sistema.",
+        command: "ps aux"
     }
 ];

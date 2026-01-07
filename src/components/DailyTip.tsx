@@ -5,10 +5,7 @@ import { tips, Tip } from "@/data/tips";
 import { Lightbulb, Copy, Check, Sparkles } from "lucide-react";
 
 export default function DailyTip() {
-    const [tip, setTip] = useState<Tip | null>(null);
-    const [copied, setCopied] = useState(false);
-
-    useEffect(() => {
+    const [tip] = useState<Tip | null>(() => {
         const now = new Date();
         const start = new Date(now.getFullYear(), 0, 0);
         const diff = now.getTime() - start.getTime();
@@ -16,8 +13,9 @@ export default function DailyTip() {
         const dayOfYear = Math.floor(diff / oneDay);
 
         const index = dayOfYear % tips.length;
-        setTip(tips[index]);
-    }, []);
+        return tips[index];
+    });
+    const [copied, setCopied] = useState(false);
 
     const copyToClipboard = (text: string) => {
         navigator.clipboard.writeText(text);
@@ -29,7 +27,6 @@ export default function DailyTip() {
 
     return (
         <div className="relative overflow-hidden rounded-2xl border border-indigo-100 dark:border-indigo-900/30 bg-gradient-to-r from-indigo-50/50 to-violet-50/50 dark:from-indigo-950/20 dark:to-violet-950/20 p-6 shadow-sm mb-10 transition-all hover:shadow-md">
-            {/* Background decoration */}
             <div className="absolute -right-4 -top-4 text-indigo-200/20 dark:text-indigo-800/20 rotate-12">
                 <Sparkles size={120} />
             </div>
