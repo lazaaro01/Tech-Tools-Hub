@@ -413,8 +413,26 @@ export const tools: Tool[] = [
       { title: "Gerar chave da app", cmd: "php artisan key:generate" },
       { title: "Limpar cache", cmd: "php artisan cache:clear" },
       { title: "Criar seeder", cmd: "php artisan make:seeder UsersTableSeeder" },
-      { title: "Executar seeders", cmd: "php artisan db:seed" }
     ],
-    docs: "https://laravel.com/docs"
+    docs: "https://laravel.com/docs/",
+    },
+  {
+    slug: "python",
+    name: "Python",
+    description: "Linguagem de programação de alto nível, interpretada e orientada a objetos.",
+    category: "Programming Languages",
+    commands: [
+      { title: "Verificar versão", cmd: "python --version" },
+      { title: "Executar script", cmd: "python script.py" },
+      { title: "Instalar pacote", cmd: "pip install <pacote>" },
+      { title: "Criar ambiente virtual", cmd: "python -m venv env" },
+      { title: "Ativar ambiente virtual (Windows)", cmd: "env\\Scripts\\activate" },
+      { title: "Ativar ambiente virtual (Linux/Mac)", cmd: "source env/bin/activate" },
+      { title: "Desativar ambiente virtual", cmd: "deactivate" },
+      { title: "Listar pacotes instalados", cmd: "pip list" },
+      { title: "Criar arquivo Python", cmd: "touch script.py" },
+      { title: "Executar em modo interativo", cmd: "python -i" }
+    ],
+    docs: "https://docs.python.org/"
   }
 ];
