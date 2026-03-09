@@ -1,6 +1,7 @@
 import { tools as allTools } from "@/data/tools";
 import ToolsGrid from "@/components/ToolsGrid";
 import DailyTip from "@/components/DailyTip";
+import CommandGenerator from "@/components/CommandGenerator";
 
 export default function Home() {
   return (
@@ -11,6 +12,8 @@ export default function Home() {
       </div>
 
       <DailyTip />
+
+      <CommandGenerator />
 
       <ToolsGrid initialTools={allTools} />
     </main>

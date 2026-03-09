@@ -1,15 +1,24 @@
+"use client";
+
 import Link from "next/link";
 import { tools } from "@/data/tools";
 import { Tool } from "@/types/Tool";
 import CopyButton from "@/components/CopyButton";
 import ExplainButton from "@/components/ExplainButton";
+import { Star, Eye, EyeOff } from "lucide-react";
+import { useFavorites } from "@/hooks/useFavorites";
+import CommandVisualizer from "@/components/CommandVisualizer";
+import React from "react";
 
 interface ToolPageProps {
   params: Promise<{ slug: string }>;
 }
 
-export default async function ToolPage({ params }: ToolPageProps) {
-  const { slug } = await params;
+export default function ToolPage({ params }: ToolPageProps) {
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const [showVisual, setShowVisual] = React.useState<Record<number, boolean>>({});
+  const resolvedParams = React.use(params);
+  const { slug } = resolvedParams;
 
   const tool: Tool | undefined = tools.find((t) => t.slug === slug);
 
@@ -50,20 +59,45 @@ export default async function ToolPage({ params }: ToolPageProps) {
         </div>
 
         <div className="divide-y divide-gray-100 dark:divide-gray-700">
-          {tool.commands.map((c, i) => (
-            <div key={i} className="group p-4 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors flex items-center justify-between gap-4">
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{c.title}</p>
-                <div className="font-mono text-sm text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-900 rounded px-2 py-1.5 break-all border border-gray-200 dark:border-gray-700">
-                  {c.cmd}
+          {tool.commands.map((c, i) => {
+            const cmdId = `${tool.slug}:${c.title}`;
+            const active = isFavorite(cmdId);
+            const isVisualVisible = showVisual[i];
+
+            return (
+              <div key={i} className="group p-4 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{c.title}</p>
+                      <button
+                        onClick={() => toggleFavorite(cmdId)}
+                        className={`transition-colors ${active ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400'}`}
+                        title={active ? "Remover dos favoritos" : "Adicionar aos favoritos"}
+                      >
+                        <Star size={14} fill={active ? "currentColor" : "none"} />
+                      </button>
+                    </div>
+                    <div className="font-mono text-sm text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-900 rounded px-2 py-1.5 break-all border border-gray-200 dark:border-gray-700">
+                      {c.cmd}
+                    </div>
+                  </div>
+                  <div className="opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+                    <button
+                      onClick={() => setShowVisual(prev => ({ ...prev, [i]: !prev[i] }))}
+                      className={`p-2 rounded-md transition ${isVisualVisible ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40' : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-gray-600'}`}
+                      title="Ver visualização"
+                    >
+                      {isVisualVisible ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                    <ExplainButton command={c.cmd} toolName={tool.name} />
+                    <CopyButton text={c.cmd} />
+                  </div>
                 </div>
+                {isVisualVisible && <CommandVisualizer toolSlug={tool.slug} commandTitle={c.title} />}
               </div>
-              <div className="opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
-                <ExplainButton command={c.cmd} toolName={tool.name} />
-                <CopyButton text={c.cmd} />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Tool } from "@/types/Tool";
 import ToolCard from "./ToolCard";
 import CategoryFilter from "./CategoryFilter";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface Props {
   initialTools: Tool[];
@@ -12,6 +13,7 @@ interface Props {
 export default function ToolsGrid({ initialTools }: Props) {
   const [query, setQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("Todas");
+  const { favorites } = useFavorites();
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -24,13 +26,22 @@ export default function ToolsGrid({ initialTools }: Props) {
 
   const categories = useMemo(() => {
     const cats = Array.from(new Set(initialTools.map((t) => t.category)));
-    return ["Todas", ...cats].sort();
-  }, [initialTools]);
+    const baseCats = ["Todas", ...cats].sort();
+    // Adiciona "Favoritos" se houver algum favorito
+    if (favorites.length > 0) {
+      return ["Favoritos", ...baseCats];
+    }
+    return baseCats;
+  }, [initialTools, favorites]);
 
   const filtered = useMemo(() => {
     let result = initialTools;
 
-    if (selectedCategory !== "Todas") {
+    if (selectedCategory === "Favoritos") {
+      result = result.filter((t) =>
+        favorites.includes(`tool:${t.slug}`) || t.commands.some(c => favorites.includes(`${t.slug}:${c.title}`))
+      );
+    } else if (selectedCategory !== "Todas") {
       result = result.filter((t) => t.category === selectedCategory);
     }
 
