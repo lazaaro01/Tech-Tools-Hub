@@ -1,8 +1,7 @@
-"use client";
-
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
+import UserProfile from "./auth/UserProfile";
 
 export default function Navbar() {
   return (
@@ -23,8 +22,9 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4 shrink-0">
+          <UserProfile />
           <a
-            href="https://github.com"
+            href="https://github.com/seu-perfil"
             target="_blank"
             rel="noreferrer"
             className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors hidden md:block"
