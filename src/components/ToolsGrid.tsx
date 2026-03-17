@@ -27,7 +27,6 @@ export default function ToolsGrid({ initialTools }: Props) {
   const categories = useMemo(() => {
     const cats = Array.from(new Set(initialTools.map((t) => t.category)));
     const baseCats = ["Todas", ...cats].sort();
-    // Adiciona "Favoritos" se houver algum favorito
     if (favorites.length > 0) {
       return ["Favoritos", ...baseCats];
     }
@@ -56,7 +55,7 @@ export default function ToolsGrid({ initialTools }: Props) {
     }
 
     return result;
-  }, [query, selectedCategory, initialTools]);
+  }, [query, selectedCategory, initialTools, favorites]);
 
   return (
     <section>
