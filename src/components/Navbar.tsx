@@ -24,7 +24,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2 md:gap-4 shrink-0">
           <UserProfile />
           <a
-            href="https://github.com/seu-perfil"
+            href="https://github.com/lazaaro01/Tech-Tools-Hub"
             target="_blank"
             rel="noreferrer"
             className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors hidden md:block"
