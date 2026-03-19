@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import ThemeToggle from "./ThemeToggle";
+import { Zap } from "lucide-react";
 import UserProfile from "./auth/UserProfile";
 
 export default function Navbar() {
@@ -22,6 +23,12 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-2 md:gap-4 shrink-0">
+          <Link 
+            href="/quiz" 
+            className="text-sm font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1.5 rounded-xl hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-all flex items-center gap-1.5"
+          >
+            <Zap size={14} /> Quiz
+          </Link>
           <UserProfile />
           <a
             href="https://github.com/lazaaro01/Tech-Tools-Hub"

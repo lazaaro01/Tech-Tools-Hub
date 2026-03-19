@@ -1,11 +1,38 @@
-import { auth } from "@/auth";
+"use client";
+
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { User, Mail, FileText, ChevronLeft, Github, Chrome } from "lucide-react";
+import { ChevronLeft, Github, Chrome, MapPin, Globe, Linkedin, Save, User, Briefcase, AlignLeft } from "lucide-react";
 import ProfileFavorites from "@/components/profile/ProfileFavorites";
+import { useState, useEffect } from "react";
 
-export default async function ProfilePage() {
-  const session = await auth();
+export default function ProfilePage() {
+  const { data: session } = useSession();
+  const [profileData, setProfileData] = useState({
+    fullName: "",
+    title: "",
+    bio: "",
+    location: "",
+    website: "",
+    linkedin: ""
+  });
+  const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("tech-tools-profile");
+    if (saved) {
+      setProfileData(JSON.parse(saved));
+    } else if (session?.user) {
+      setProfileData(prev => ({ ...prev, fullName: session.user?.name || "" }));
+    }
+  }, [session]);
+
+  const handleSave = () => {
+    setIsSaving(true);
+    localStorage.setItem("tech-tools-profile", JSON.stringify(profileData));
+    setTimeout(() => setIsSaving(false), 800);
+  };
 
   if (!session?.user) {
     return (
@@ -22,92 +49,150 @@ export default async function ProfilePage() {
     );
   }
 
-  const { name, email, image } = session.user;
+  const isGithub = session.user.email?.includes("github") || true; // Simplificado para o exemplo, idealmente checar provider
 
   return (
-    <div className="max-w-2xl mx-auto py-10 px-4">
+    <div className="max-w-3xl mx-auto py-10 px-4">
       <Link
         href="/"
         className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-indigo-600 mb-8 transition-colors group"
       >
         <ChevronLeft size={16} className="mr-1 group-hover:-translate-x-0.5 transition-transform" />
-        Voltar para Ferramentas
+        Voltar para Home
       </Link>
 
-      <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-[32px] blur-2xl opacity-10 dark:opacity-20 -z-10" />
-        
-        <div className="bg-white dark:bg-gray-800 rounded-[32px] p-8 md:p-12 shadow-sm border border-gray-100 dark:border-gray-700">
-          <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-            <div className="relative shrink-0">
-              {image ? (
-                <Image
-                  src={image}
-                  alt={name ?? "Usuário"}
-                  width={120}
-                  height={120}
-                  className="rounded-[32px] ring-4 ring-indigo-500/10 shadow-xl"
-                />
-              ) : (
-                <div className="w-[120px] h-[120px] rounded-[32px] bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
-                  {name?.charAt(0) ?? "U"}
-                </div>
-              )}
-              <div className="absolute -bottom-2 -right-2 bg-white dark:bg-gray-700 p-2 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-600">
-                {email?.includes("gmail") ? (
-                   <Chrome size={20} className="text-red-500" />
-                ) : (
-                   <Github size={20} className="text-gray-800 dark:text-white" />
-                )}
-              </div>
-            </div>
-
-            <div className="flex-1 text-center md:text-left">
-              <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">{name}</h1>
-              <div className="flex flex-wrap justify-center md:justify-start gap-4 mb-6">
-                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                  <Mail size={14} className="mr-2 text-indigo-500" />
-                  {email}
-                </div>
-                <div className="flex items-center text-sm text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 px-3 py-1 rounded-full font-semibold">
-                  Membro Hub
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3 flex items-center">
-                    <FileText size={14} className="mr-2" />
-                    Sobre Mim
-                  </h3>
-                  <div className="relative group">
-                    <textarea 
-                      placeholder="Conte um pouco sobre suas tecnologias favoritas..."
-                      className="w-full bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 text-sm text-gray-700 dark:text-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none min-h-[120px] resize-none"
+      {/* Header com Avatar Centralizado */}
+      <div className="flex flex-col items-center mb-12">
+        <div className="relative mb-6">
+            <div className="absolute inset-0 bg-indigo-500 rounded-full blur-2xl opacity-20 animate-pulse" />
+            <div className="relative">
+                {session.user.image ? (
+                    <Image
+                        src={session.user.image}
+                        alt={session.user.name ?? "Usuário"}
+                        width={140}
+                        height={140}
+                        className="rounded-full ring-4 ring-gray-900 shadow-2xl relative z-10"
                     />
-                    <div className="absolute top-2 right-4 text-[10px] font-bold text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                      Salvo localmente
+                ) : (
+                    <div className="w-[140px] h-[140px] rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-5xl font-bold shadow-2xl relative z-10">
+                        {session.user.name?.charAt(0) ?? "U"}
                     </div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100 dark:border-gray-700">
-                  <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900 text-center">
-                    <div className="text-xl font-bold text-gray-900 dark:text-white">🚀</div>
-                    <div className="text-[10px] font-bold uppercase text-gray-500 mt-1">Nível Dev</div>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-gray-50 dark:bg-gray-900 text-center">
-                    <div className="text-xl font-bold text-gray-900 dark:text-white">✨</div>
-                    <div className="text-[10px] font-bold uppercase text-gray-500 mt-1">Conquistas</div>
-                  </div>
-                </div>
-              </div>
+                )}
             </div>
-          </div>
+        </div>
+        <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
+            <Github size={16} />
+            Conectado via GitHub como <span className="text-white">@{session.user.name?.replace(/\s+/g, '').toLowerCase()}</span>
         </div>
       </div>
 
-      <ProfileFavorites />
+      {/* Formulário Estilo Cartão */}
+      <div className="bg-[#0f0f0f] border border-gray-800 rounded-3xl p-8 md:p-10 shadow-2xl space-y-8">
+        
+        {/* Nome Completo */}
+        <div className="space-y-3">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+                Nome completo
+            </label>
+            <input 
+                type="text"
+                value={profileData.fullName}
+                onChange={(e) => setProfileData({...profileData, fullName: e.target.value})}
+                placeholder="Seu nome"
+                className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+            />
+        </div>
+
+        {/* Título Profissional */}
+        <div className="space-y-3">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+                Título profissional
+            </label>
+            <input 
+                type="text"
+                value={profileData.title}
+                onChange={(e) => setProfileData({...profileData, title: e.target.value})}
+                placeholder="Ex: Desenvolvedor Full Stack"
+                className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+            />
+        </div>
+
+        {/* Bio */}
+        <div className="space-y-3">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+                Bio
+            </label>
+            <textarea 
+                value={profileData.bio}
+                onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                placeholder="Conte um pouco sobre você..."
+                className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all min-h-[120px] resize-none"
+            />
+        </div>
+
+        {/* Localização */}
+        <div className="space-y-3">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+                <MapPin size={16} /> Localização
+            </label>
+            <input 
+                type="text"
+                value={profileData.location}
+                onChange={(e) => setProfileData({...profileData, location: e.target.value})}
+                placeholder="Ex: Fortaleza, Ceará, Brasil"
+                className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+            />
+        </div>
+
+        {/* Website e LinkedIn */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+                <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+                    <Globe size={16} /> Website
+                </label>
+                <input 
+                    type="url"
+                    value={profileData.website}
+                    onChange={(e) => setProfileData({...profileData, website: e.target.value})}
+                    placeholder="https://seusite.com"
+                    className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+                />
+            </div>
+            <div className="space-y-3">
+                <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+                    <Linkedin size={16} /> LinkedIn
+                </label>
+                <input 
+                    type="text"
+                    value={profileData.linkedin}
+                    onChange={(e) => setProfileData({...profileData, linkedin: e.target.value})}
+                    placeholder="seu-perfil"
+                    className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+                />
+            </div>
+        </div>
+
+        {/* Botão Salvar Alterações */}
+        <button 
+            onClick={handleSave}
+            disabled={isSaving}
+            className="w-full py-5 bg-[#ffea00] hover:bg-[#ffe100] text-black rounded-2xl font-bold flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-lg shadow-yellow-500/10"
+        >
+            {isSaving ? (
+                "Salvando..."
+            ) : (
+                <>
+                    <Save size={20} />
+                    Salvar Alterações
+                </>
+            )}
+        </button>
+      </div>
+
+      <div className="mt-16">
+          <ProfileFavorites />
+      </div>
     </div>
   );
 }
