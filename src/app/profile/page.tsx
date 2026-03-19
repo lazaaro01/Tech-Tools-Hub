@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { User, Mail, FileText, ChevronLeft, Github, Chrome } from "lucide-react";
+import ProfileFavorites from "@/components/profile/ProfileFavorites";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -105,6 +106,8 @@ export default async function ProfilePage() {
           </div>
         </div>
       </div>
+
+      <ProfileFavorites />
     </div>
   );
 }

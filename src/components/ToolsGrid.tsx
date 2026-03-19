@@ -38,7 +38,7 @@ export default function ToolsGrid({ initialTools }: Props) {
 
     if (selectedCategory === "Favoritos") {
       result = result.filter((t) =>
-        favorites.includes(`tool:${t.slug}`) || t.commands.some(c => favorites.includes(`${t.slug}:${c.title}`))
+        favorites.some(f => f.id === `tool:${t.slug}`) || t.commands.some(c => favorites.some(f => f.id === `${t.slug}:${c.title}`))
       );
     } else if (selectedCategory !== "Todas") {
       result = result.filter((t) => t.category === selectedCategory);

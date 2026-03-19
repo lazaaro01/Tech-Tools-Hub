@@ -14,7 +14,7 @@ export default function ToolCard({ tool }: ToolCardProps) {
   const { toggleFavorite, isFavorite, favorites } = useFavorites();
   const toolId = `tool:${tool.slug}`;
   const active = isFavorite(toolId);
-  const hasFavoriteCommands = tool.commands.some(c => favorites.includes(`${tool.slug}:${c.title}`));
+  const hasFavoriteCommands = tool.commands.some(c => favorites.some(f => f.id === `${tool.slug}:${c.title}`));
 
   return (
     <div className="relative group/card h-full">
