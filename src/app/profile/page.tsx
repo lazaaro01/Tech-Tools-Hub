@@ -72,7 +72,7 @@ export default function ProfilePage() {
                         alt={session.user.name ?? "Usuário"}
                         width={140}
                         height={140}
-                        className="rounded-full ring-4 ring-gray-900 shadow-2xl relative z-10"
+                        className="rounded-full ring-4 ring-indigo-500/50 shadow-2xl relative z-10"
                     />
                 ) : (
                     <div className="w-[140px] h-[140px] rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-5xl font-bold shadow-2xl relative z-10">
@@ -83,7 +83,7 @@ export default function ProfilePage() {
         </div>
         <div className="flex items-center gap-2 text-gray-400 text-sm font-medium">
             <Github size={16} />
-            Conectado via GitHub como <span className="text-white">@{session.user.name?.replace(/\s+/g, '').toLowerCase()}</span>
+            Conectado via GitHub como <span className="text-indigo-400">@{session.user.name?.replace(/\s+/g, '').toLowerCase()}</span>
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default function ProfilePage() {
         
         {/* Nome Completo */}
         <div className="space-y-3">
-            <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-wide">
                 Nome completo
             </label>
             <input 
@@ -100,13 +100,13 @@ export default function ProfilePage() {
                 value={profileData.fullName}
                 onChange={(e) => setProfileData({...profileData, fullName: e.target.value})}
                 placeholder="Seu nome"
-                className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+                className="w-full bg-[#161616] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
             />
         </div>
 
         {/* Título Profissional */}
         <div className="space-y-3">
-            <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-wide">
                 Título profissional
             </label>
             <input 
@@ -114,26 +114,26 @@ export default function ProfilePage() {
                 value={profileData.title}
                 onChange={(e) => setProfileData({...profileData, title: e.target.value})}
                 placeholder="Ex: Desenvolvedor Full Stack"
-                className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+                className="w-full bg-[#161616] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
             />
         </div>
 
         {/* Bio */}
         <div className="space-y-3">
-            <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-wide">
                 Bio
             </label>
             <textarea 
                 value={profileData.bio}
                 onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
                 placeholder="Conte um pouco sobre você..."
-                className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all min-h-[120px] resize-none"
+                className="w-full bg-[#161616] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all min-h-[120px] resize-none"
             />
         </div>
 
         {/* Localização */}
         <div className="space-y-3">
-            <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
+            <label className="flex items-center gap-2 text-sm font-bold text-gray-400 uppercase tracking-wide">
                 <MapPin size={16} /> Localização
             </label>
             <input 
@@ -141,43 +141,15 @@ export default function ProfilePage() {
                 value={profileData.location}
                 onChange={(e) => setProfileData({...profileData, location: e.target.value})}
                 placeholder="Ex: Fortaleza, Ceará, Brasil"
-                className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
+                className="w-full bg-[#161616] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
             />
-        </div>
-
-        {/* Website e LinkedIn */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-                <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
-                    <Globe size={16} /> Website
-                </label>
-                <input 
-                    type="url"
-                    value={profileData.website}
-                    onChange={(e) => setProfileData({...profileData, website: e.target.value})}
-                    placeholder="https://seusite.com"
-                    className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
-                />
-            </div>
-            <div className="space-y-3">
-                <label className="flex items-center gap-2 text-sm font-bold text-gray-200 uppercase tracking-wide">
-                    <Linkedin size={16} /> LinkedIn
-                </label>
-                <input 
-                    type="text"
-                    value={profileData.linkedin}
-                    onChange={(e) => setProfileData({...profileData, linkedin: e.target.value})}
-                    placeholder="seu-perfil"
-                    className="w-full bg-[#1a1a1a] border border-gray-800 rounded-2xl p-4 text-white focus:ring-2 focus:ring-yellow-400 focus:border-transparent outline-none transition-all"
-                />
-            </div>
         </div>
 
         {/* Botão Salvar Alterações */}
         <button 
             onClick={handleSave}
             disabled={isSaving}
-            className="w-full py-5 bg-[#ffea00] hover:bg-[#ffe100] text-black rounded-2xl font-bold flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-lg shadow-yellow-500/10"
+            className="w-full py-5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold flex items-center justify-center gap-3 transition-all active:scale-[0.98] shadow-lg shadow-indigo-500/10"
         >
             {isSaving ? (
                 "Salvando..."
