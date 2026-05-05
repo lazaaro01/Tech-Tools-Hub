@@ -37,11 +37,11 @@ export async function POST(request: Request) {
         const command = completion.choices[0]?.message?.content?.trim() || "Não foi possível gerar o comando.";
 
         return NextResponse.json({ command });
-    } catch (error: any) {
+    } catch (error) {
         console.error("Erro na Groq API:", error);
         return NextResponse.json({
             error: "Erro ao gerar comando",
-            details: error.message || String(error)
+            details: error instanceof Error ? error.message : String(error)
         }, { status: 500 });
     }
 }

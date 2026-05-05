@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GitBranch, Box, Database, Terminal, FileCode, Info, ChevronRight } from "lucide-react";
+import { Terminal, Box, Info } from "lucide-react";
 import { useMemo, useState } from "react";
 import { tools } from "@/data/tools";
 

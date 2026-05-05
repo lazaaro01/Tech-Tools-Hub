@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { tips, Tip } from "@/data/tips";
 import { Lightbulb, Copy, Check, Sparkles } from "lucide-react";
 

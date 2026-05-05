@@ -32,6 +32,7 @@ export default function CommandGenerator() {
             } else {
                 setError(data.error || "Erro inesperado");
             }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             setError("Falha na conexão com o servidor");
         } finally {
@@ -47,7 +48,7 @@ export default function CommandGenerator() {
 
     return (
         <section className="w-full max-w-4xl mx-auto mb-12 px-4">
-            <div className="bg-gradient-to-br from-indigo-600 to-violet-700 dark:from-indigo-900 dark:to-violet-950 p-6 md:p-8 rounded-3xl shadow-xl border border-indigo-400/20 text-white overflow-hidden relative">
+            <div className="bg-linear-to-br from-indigo-600 to-violet-700 dark:from-indigo-900 dark:to-violet-950 p-6 md:p-8 rounded-3xl shadow-xl border border-indigo-400/20 text-white overflow-hidden relative">
                 {/* Decorative background elements */}
                 <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
                 <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-32 h-32 bg-indigo-400/20 rounded-full blur-3xl" />

@@ -1,9 +1,8 @@
 "use client";
 
-import { useFavorites, FavoriteItem } from "@/context/FavoritesContext";
+import { useFavorites } from "@/context/FavoritesContext";
 import { tools } from "@/data/tools";
-import { Tool } from "@/types/Tool";
-import { Star, Tag, X, ExternalLink, Search } from "lucide-react";
+import { Star, X, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";

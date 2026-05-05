@@ -3,30 +3,43 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, Github, Chrome, MapPin, Globe, Linkedin, Save, User, Briefcase, AlignLeft } from "lucide-react";
+import { ChevronLeft, Github, MapPin, Save } from "lucide-react";
 import ProfileFavorites from "@/components/profile/ProfileFavorites";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function ProfilePage() {
   const { data: session } = useSession();
-  const [profileData, setProfileData] = useState({
-    fullName: "",
-    title: "",
-    bio: "",
-    location: "",
-    website: "",
-    linkedin: ""
+  const sessionAppliedRef = useRef(false);
+  const [profileData, setProfileData] = useState(() => {
+    if (typeof window === "undefined") {
+      return { fullName: "", title: "", bio: "", location: "", website: "", linkedin: "" };
+    }
+    const saved = localStorage.getItem("tech-tools-profile");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (error) {
+        console.error("Erro ao parsear dados do perfil do localStorage:", error);
+      }
+    }
+    return {
+      fullName: "",
+      title: "",
+      bio: "",
+      location: "",
+      website: "",
+      linkedin: ""
+    };
   });
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-    const saved = localStorage.getItem("tech-tools-profile");
-    if (saved) {
-      setProfileData(JSON.parse(saved));
-    } else if (session?.user) {
-      setProfileData(prev => ({ ...prev, fullName: session.user?.name || "" }));
+    if (session?.user && !profileData.fullName && !sessionAppliedRef.current) {
+      sessionAppliedRef.current = true;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setProfileData((prev: typeof profileData) => ({ ...prev, fullName: session.user?.name || "" }));
     }
-  }, [session]);
+  }, [session, profileData.fullName]);
 
   const handleSave = () => {
     setIsSaving(true);
@@ -48,8 +61,6 @@ export default function ProfilePage() {
       </div>
     );
   }
-
-  const isGithub = session.user.email?.includes("github") || true; // Simplificado para o exemplo, idealmente checar provider
 
   return (
     <div className="max-w-3xl mx-auto py-10 px-4">

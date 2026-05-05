@@ -33,11 +33,11 @@ export async function POST(request: Request) {
         const explanation = completion.choices[0]?.message?.content || "Não foi possível gerar uma explicação.";
 
         return NextResponse.json({ explanation });
-    } catch (error: any) {
+    } catch (error) {
         console.error("Erro na Groq API:", error);
         return NextResponse.json({
             error: "Erro ao processar explicação",
-            details: error.message || String(error)
+            details: error instanceof Error ? error.message : String(error)
         }, { status: 500 });
     }
 }

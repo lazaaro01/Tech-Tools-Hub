@@ -1,29 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+}
+
 export default function ThemeToggle() {
-  const [isDark, setIsDark] = useState<boolean>(false);
-  const [mounted, setMounted] = useState(false);
+  const isDark = useSyncExternalStore(
+    subscribe,
+    () => {
+      if (typeof window === "undefined") return false;
+      const stored = localStorage.getItem("theme");
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      return stored === "dark" || (!stored && prefersDark);
+    },
+    () => false
+  );
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    if (stored === "dark" || (!stored && prefersDark)) {
-      setIsDark(true);
-      document.documentElement.classList.add("dark");
-    } else {
-      setIsDark(false);
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
     const root = document.documentElement;
     if (isDark) {
       root.classList.add("dark");
@@ -32,17 +29,22 @@ export default function ThemeToggle() {
       root.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
-  }, [isDark, mounted]);
-
-  if (!mounted) {
-    return (
-      <div className="p-2 w-9 h-9" />
-    );
-  }
+  }, [isDark]);
 
   return (
     <button
-      onClick={() => setIsDark((v) => !v)}
+      onClick={() => {
+        const root = document.documentElement;
+        const newDark = !isDark;
+        if (newDark) {
+          root.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          root.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        }
+        window.dispatchEvent(new Event("storage"));
+      }}
       className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition text-gray-700 dark:text-gray-300"
       aria-label="Alternar tema"
     >

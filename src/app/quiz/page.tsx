@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { tools } from "@/data/tools";
-import { motion, AnimatePresence } from "framer-motion";
-import { Trophy, ArrowRight, RotateCcw, Target, Zap, ChevronLeft } from "lucide-react";
+import { motion } from "framer-motion";
+import { Trophy, RotateCcw, Target, Zap, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 interface Question {
@@ -14,37 +14,7 @@ interface Question {
   toolName: string;
 }
 
-export default function QuizPage() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [showResult, setShowResult] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [timeLeft, setTimeLeft] = useState(20);
-  const [questions, setQuestions] = useState<Question[]>([]);
-
-  // Gerar perguntas aleatórias ao iniciar
-  useEffect(() => {
-    generateQuestions();
-  }, []);
-
-  // Timer Effect
-  useEffect(() => {
-    if (showResult || selectedOption) return;
-
-    if (timeLeft === 0) {
-        handleOptionClick(""); // Falha automática por tempo esgotado
-        return;
-    }
-
-    const timer = setInterval(() => {
-        setTimeLeft(prev => prev - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [timeLeft, showResult, selectedOption]);
-
-  const generateQuestions = () => {
+function generateQuestions(): Question[] {
     const allCommands: { toolName: string; title: string; cmd: string }[] = [];
     tools.forEach((tool) => {
       tool.commands.forEach((cmd) => {
@@ -57,7 +27,7 @@ export default function QuizPage() {
     const shuffled = [...allCommands].sort(() => 0.5 - Math.random());
     const selected = shuffled.slice(0, 10);
 
-    const newQuestions = selected.map((cmd, idx) => {
+    return selected.map((cmd, idx) => {
       const options = [cmd.cmd];
       while (options.length < 4) {
         const randomCmd = allCommands[Math.floor(Math.random() * allCommands.length)].cmd;
@@ -73,35 +43,74 @@ export default function QuizPage() {
         toolName: cmd.toolName,
       };
     });
+  }
 
+export default function QuizPage() {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState(20);
+  const [questions, setQuestions] = useState<Question[]>(() => generateQuestions());
+
+  const resetQuiz = () => {
+    const newQuestions = generateQuestions();
     setQuestions(newQuestions);
     setScore(0);
     setCurrentQuestionIndex(0);
     setShowResult(false);
     setSelectedOption(null);
-    setIsCorrect(null);
     setTimeLeft(20);
   };
 
-  const handleOptionClick = (option: string) => {
+  const handleOptionClick = useCallback((option: string) => {
     if (selectedOption) return;
 
     setSelectedOption(option);
     const correct = option === questions[currentQuestionIndex].correctAnswer;
-    setIsCorrect(correct);
     if (correct) setScore(score + 1);
 
     setTimeout(() => {
         if (currentQuestionIndex < questions.length - 1) {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
           setSelectedOption(null);
-          setIsCorrect(null);
           setTimeLeft(20);
         } else {
           setShowResult(true);
         }
     }, 1500);
-  };
+  }, [questions, currentQuestionIndex, score, selectedOption]);
+
+  useEffect(() => {
+    if (showResult || selectedOption) return;
+
+    if (timeLeft === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSelectedOption("");
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setTimeLeft(prev => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft, showResult, selectedOption]);
+
+  useEffect(() => {
+    if (selectedOption === "" && !showResult) {
+      const timeout = setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          setSelectedOption(null);
+          setTimeLeft(20);
+        } else {
+          setShowResult(true);
+        }
+      }, 1500);
+      return () => clearTimeout(timeout);
+    }
+  }, [selectedOption, showResult, currentQuestionIndex, questions.length]);
 
   if (questions.length === 0) return null;
 
@@ -121,7 +130,7 @@ export default function QuizPage() {
             
             <div className="flex flex-col gap-3">
                 <button
-                    onClick={generateQuestions}
+                    onClick={resetQuiz}
                     className="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-indigo-700 transition-all active:scale-[0.98]"
                 >
                     <RotateCcw size={20} /> Jogar Novamente
@@ -149,7 +158,7 @@ export default function QuizPage() {
         <div className="flex items-center gap-4">
             <div className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${timeLeft < 5 ? 'bg-red-500 text-white animate-pulse' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'}`}>
                 <Zap size={16} />
-                <span className="text-xs font-black uppercase tracking-widest min-w-[30px] text-center">
+                <span className="text-xs font-black uppercase tracking-widest min-w-7.5 text-center">
                     {timeLeft}s
                 </span>
             </div>
@@ -168,7 +177,7 @@ export default function QuizPage() {
         </span>
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white leading-tight">
           Qual o comando para <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-violet-500">
+          <span className="text-transparent bg-clip-text bg-linear-to-r from-indigo-500 to-violet-500">
             {currentQuestion.description.split(': ')[1]}?
           </span>
         </h1>

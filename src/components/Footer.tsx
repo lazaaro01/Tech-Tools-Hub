@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Terminal } from "lucide-react";
+import { Terminal } from "lucide-react";
 
 export default function Footer() {
     const currentYear = new Date().getFullYear();
@@ -13,7 +13,7 @@ export default function Footer() {
                         <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
                             <Terminal size={18} className="text-indigo-500" />
                             <span className="text-sm font-medium italic">
-                                "Qual era aquele comando mesmo?"
+                                &quot;Qual era aquele comando mesmo?&quot;
                             </span>
                         </div>
                         <p className="text-sm text-gray-600 dark:text-gray-300">

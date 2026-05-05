@@ -15,8 +15,9 @@ interface ToolPageProps {
 }
 
 export default function ToolPage({ params }: ToolPageProps) {
-  const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { toggleFavorite, isFavorite } = useFavorites();
   const [showVisual, setShowVisual] = React.useState<Record<number, boolean>>({});
+  const [difficultyFilter, setDifficultyFilter] = React.useState<string>("todas");
   const resolvedParams = React.use(params);
   const { slug } = resolvedParams;
 
@@ -32,6 +33,11 @@ export default function ToolPage({ params }: ToolPageProps) {
       </div>
     );
   }
+
+  const filteredCommands = tool.commands.filter(c => {
+    if (difficultyFilter === "todas") return true;
+    return c.difficulty === difficultyFilter;
+  });
 
   return (
     <div className="max-w-3xl mx-auto p-6">
@@ -55,11 +61,27 @@ export default function ToolPage({ params }: ToolPageProps) {
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
         <div className="p-6 border-b border-gray-100 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50 flex justify-between items-center">
           <h2 className="text-xl font-semibold">Comandos Úteis</h2>
-          <span className="text-sm text-gray-500">{tool.commands.length} comandos</span>
+          <span className="text-sm text-gray-500">{filteredCommands.length} comandos</span>
+        </div>
+
+        <div className="px-6 pt-4 flex gap-2">
+          {["todas", "iniciante", "intermediario", "avancado"].map(level => (
+            <button
+              key={level}
+              onClick={() => setDifficultyFilter(level)}
+              className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${
+                difficultyFilter === level
+                  ? level === "iniciante" ? "bg-green-500 text-white" : level === "intermediario" ? "bg-yellow-500 text-white" : level === "avancado" ? "bg-red-500 text-white" : "bg-indigo-600 text-white"
+                  : "bg-gray-100 dark:bg-gray-700 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-600"
+              }`}
+            >
+              {level === "todas" ? "Todos" : level === "iniciante" ? "Iniciante" : level === "intermediario" ? "Intermediário" : "Avançado"}
+            </button>
+          ))}
         </div>
 
         <div className="divide-y divide-gray-100 dark:divide-gray-700">
-          {tool.commands.map((c, i) => {
+          {filteredCommands.map((c, i) => {
             const cmdId = `${tool.slug}:${c.title}`;
             const active = isFavorite(cmdId);
             const isVisualVisible = showVisual[i];
@@ -67,10 +89,19 @@ export default function ToolPage({ params }: ToolPageProps) {
             return (
               <div key={i} className="group p-4 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors">
                 <div className="flex items-center justify-between gap-4">
-                  <div className="min-w-0 flex-1">
+                    <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{c.title}</p>
-                      <button
+                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{c.title}</p>
+                       {c.difficulty && (
+                         <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md ${
+                           c.difficulty === "iniciante" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400" :
+                           c.difficulty === "intermediario" ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400" :
+                           "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
+                         }`}>
+                           {c.difficulty === "iniciante" ? "Iniciante" : c.difficulty === "intermediario" ? "Intermediário" : "Avançado"}
+                         </span>
+                       )}
+                       <button
                         onClick={() => toggleFavorite(cmdId)}
                         className={`transition-colors ${active ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400'}`}
                         title={active ? "Remover dos favoritos" : "Adicionar aos favoritos"}

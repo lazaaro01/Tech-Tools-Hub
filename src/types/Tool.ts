@@ -6,6 +6,7 @@ export interface Tool {
   commands: {
     title: string;
     cmd: string;
+    difficulty?: "iniciante" | "intermediario" | "avancado";
   }[];
   docs: string;
 }

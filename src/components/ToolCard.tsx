@@ -41,8 +41,15 @@ export default function ToolCard({ tool }: ToolCardProps) {
           </div>
 
           <div className="mt-6 pt-4 border-t border-gray-50 dark:border-gray-700/50 flex items-center justify-between">
-            <div className="px-2.5 py-1 bg-gray-100 dark:bg-gray-700/50 rounded-lg text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
-              {tool.commands.length} comandos
+            <div className="flex items-center gap-2">
+              <div className="px-2.5 py-1 bg-gray-100 dark:bg-gray-700/50 rounded-lg text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">
+                {tool.commands.length} comandos
+              </div>
+              {tool.commands.some(c => c.difficulty === "avancado") && (
+                <div className="px-2 py-0.5 bg-red-50 dark:bg-red-900/20 rounded-md text-[9px] font-bold text-red-500 uppercase">
+                  Avançado
+                </div>
+              )}
             </div>
             <div className="text-indigo-600 dark:text-indigo-400 font-bold text-sm flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               Explorar →

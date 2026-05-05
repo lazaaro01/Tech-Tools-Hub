@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 export interface FavoriteItem {
   id: string;
@@ -18,31 +18,29 @@ interface FavoritesContextType {
 const FavoritesContext = createContext<FavoritesContextType | undefined>(undefined);
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
-  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
-
-  useEffect(() => {
+  const [favorites, setFavorites] = useState<FavoriteItem[]>(() => {
+    if (typeof window === "undefined") return [];
     const saved = localStorage.getItem("tech-tools-favorites-v2");
     if (saved) {
       try {
-        setFavorites(JSON.parse(saved));
+        return JSON.parse(saved);
       } catch (e) {
         console.error("Erro ao carregar favoritos:", e);
       }
-    } else {
-      // Migração simples do v1 se existir
-      const oldSaved = localStorage.getItem("tech-tools-favorites");
-      if (oldSaved) {
-        try {
-          const oldFavs: string[] = JSON.parse(oldSaved);
-          const migrated = oldFavs.map(id => ({ id, tags: [] }));
-          setFavorites(migrated);
-          localStorage.setItem("tech-tools-favorites-v2", JSON.stringify(migrated));
-        } catch (e) {
-          console.error("Erro na migração:", e);
-        }
+    }
+    const oldSaved = localStorage.getItem("tech-tools-favorites");
+    if (oldSaved) {
+      try {
+        const oldFavs: string[] = JSON.parse(oldSaved);
+        const migrated = oldFavs.map(id => ({ id, tags: [] }));
+        localStorage.setItem("tech-tools-favorites-v2", JSON.stringify(migrated));
+        return migrated;
+      } catch (e) {
+        console.error("Erro na migração:", e);
       }
     }
-  }, []);
+    return [];
+  });
 
   const saveToStorage = (newFavs: FavoriteItem[]) => {
     localStorage.setItem("tech-tools-favorites-v2", JSON.stringify(newFavs));
